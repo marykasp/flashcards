@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Google font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+  <title>Coding Flashcards</title>
+</head>
+<body>
+  <!-- main container -->
+  <div class="container">
+    <!-- Add folder container -->
+    <!-- End add folder -->
+    <!-- Add flashcards -->
+    <div class="add-flashcard-container">
+      <button id="add-flashcard-btn">Add Flashcard</button>
+    </div>
+    <!-- end add flashcards -->
+
+    <!-- display card of questions and answers -->
+    <div id="card-container">
+      <!-- add new cards to end of this list -->
+      <div id="card-list-container"></div>
+    </div>
+  </div>
+
+  <!-- Form for users to add new flashcards -->
+  <div class="questions-container hide" id="add-question-card">
+    <h2>Add Flashcard</h2>
+    <div class="wrapper">
+      <!-- error message -->
+      <div class="error-container">
+        <span class="hide" id="error">Input fields cannot be empty</span>
+      </div>
+      <!-- end of error message -->
+      <!-- close button -->
+      <button><i class="fa-solid fa-xmark"></i></button>
+      <!-- input fields -->
+      <input type="text" placeholder="enter question">
+    </div>
+  </div>
+  
+</body>
+</html>
