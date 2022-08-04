@@ -18,6 +18,10 @@
   <!-- main container -->
   <div class="container">
     <!-- Add folder container -->
+    <div class="add-folder-container hide">
+      <input id="add-folder" type="text" placeholder="folder name">
+      <button id="add-folder-btn">Add Folder</button>
+    </div>
     <!-- End add folder -->
     <!-- Add flashcards -->
     <div class="add-flashcard-container">
@@ -33,18 +37,24 @@
   </div>
 
   <!-- Form for users to add new flashcards -->
-  <div class="questions-container hide" id="add-question-card">
+  <div class="questions-container" id="add-question-card">
     <h2>Add Flashcard</h2>
     <div class="wrapper">
       <!-- error message -->
       <div class="error-container">
-        <span class="hide" id="error">Input fields cannot be empty</span>
+        <span class="" id="error">Input fields cannot be empty</span>
       </div>
       <!-- end of error message -->
       <!-- close button -->
-      <button><i class="fa-solid fa-xmark"></i></button>
+      <i class="fa-solid fa-xmark" id="close-btn"></i>
+
       <!-- input fields -->
-      <input type="text" placeholder="enter question">
+      <label for="question">Question:</label>
+      <textarea class="input" placeholder="enter question" id="question" rows="2"></textarea>
+
+      <label for="answer">Answer:</label>
+      <textarea class="input" placeholder="type the answer here..." id="answer" rows="4"></textarea>
+      <button id="save-btn">Save</button>
     </div>
   </div>
   
