@@ -25,6 +25,37 @@ function hideQuestion() {
   }
 }
 
+function disableButtons(value) {
+  let editButtons = document.querySelectorAll(".edit");
+  // turn NodeList into an array
+  Array.from(editButtons).forEach((element) => {
+    element.disabled = value;
+  });
+}
+
+function modifyElement(element, edit = false) {
+  // use edit button to find its parent card div - button container -> card div
+  let parentDiv = element.parentElement.parentElement;
+  // get the text of the question on the card
+  let parentQuestion = parentDiv.querySelector(".question-div").innerText;
+  // if edit is true show the cards question and answer value in the input on the form
+  if (edit) {
+    let parentAnswer = parentDiv.querySelector(".answer-div").innerText;
+    answer.value = parentAnswer;
+    question.value = parentQuestion;
+    // disable all the edit buttons in the card list
+    disableButtons(true);
+  }
+  // remove the card from the card list
+  parentDiv.remove();
+}
+
+function deleteCard(element) {
+  let parentDiv = element.parentElement.parentElement;
+  console.log(parentDiv);
+  parentDiv.remove();
+}
+
 function displayCard() {
   // create a div
   let div = document.createElement("div");
@@ -49,29 +80,30 @@ function displayCard() {
   buttonContainer.classList.add("button-container");
   // create edit button
   let editBtn = document.createElement("button");
-  editBtn.setAttribute("id", "edit");
+  editBtn.setAttribute("class", "edit");
   // add font awesome edit icon
   editBtn.innerHTML += `<i class="fa-solid fa-pen-to-square"></i>`;
   editBtn.addEventListener("click", () => {
     editBool = true;
     modifyElement(editBtn, true);
+    // show the question form again
     questionContainer.classList.remove("hide");
   });
-
+  disableButtons(false);
   // create delete button
   let deleteBtn = document.createElement("button");
-  deleteBtn.setAttribute("id", "delete");
+  deleteBtn.setAttribute("class", "delete");
   deleteBtn.innerHTML += `<i class="fa-solid fa-trash-can"></i>`;
   deleteBtn.addEventListener("click", () => {
     // function that will delete current card
-    console.log("delete");
+    deleteCard(deleteBtn);
   });
 
   buttonContainer.appendChild(editBtn);
   buttonContainer.appendChild(deleteBtn);
   // append the children to the card div
-  div.appendChild(displayAnswer);
   div.appendChild(link);
+  div.appendChild(displayAnswer);
   div.appendChild(buttonContainer);
   // append the card to the card list container
   cardListContainer.insertAdjacentElement("beforeend", div);
