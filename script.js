@@ -36,11 +36,13 @@ function disableButtons(value) {
 function modifyElement(element, edit = false) {
   // use edit button to find its parent card div - button container -> card div
   let parentDiv = element.parentElement.parentElement;
-  // get the text of the question on the card
-  let parentQuestion = parentDiv.querySelector(".question-div").innerText;
+
   // if edit is true show the cards question and answer value in the input on the form
   if (edit) {
+    // get the text of the answer paragraph
     let parentAnswer = parentDiv.querySelector(".answer-div").innerText;
+    // get the text of the question on the card
+    let parentQuestion = parentDiv.querySelector(".question-div").innerText;
     answer.value = parentAnswer;
     question.value = parentQuestion;
     // disable all the edit buttons in the card list
@@ -63,11 +65,13 @@ function displayCard() {
   div.innerHTML += `<p class="question-div">${question.value}</p>`;
   let displayAnswer = document.createElement("p");
   displayAnswer.classList.add("answer-div");
+  displayAnswer.classList.add("hide");
   displayAnswer.innerText = answer.value;
 
   // button link to hide and show answer
   let link = document.createElement("a");
   link.setAttribute("href", "#");
+  link.classList.add("show-hide-btn");
   link.innerHTML = "Show/Hide";
   // add event listener to link button
   link.addEventListener("click", () => {
@@ -99,6 +103,7 @@ function displayCard() {
     deleteCard(deleteBtn);
   });
 
+  // append the edit and delete button to the button container
   buttonContainer.appendChild(editBtn);
   buttonContainer.appendChild(deleteBtn);
   // append the children to the card div
