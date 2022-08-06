@@ -18,6 +18,10 @@ let editBool = false;
 let flashcards = []
 
 // Helper Functions
+function revisedRandId() {
+  return Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10);
+}
+
 function hideQuestion() {
   container.classList.remove("hide");
   questionContainer.classList.add("hide");
@@ -45,8 +49,20 @@ function modifyElement(element, edit = false) {
     let parentAnswer = parentDiv.querySelector(".answer-div").innerText;
     // get the text of the question on the card
     let parentQuestion = parentDiv.querySelector(".question-div").innerText;
+    // change the inputs on the form
     answer.value = parentAnswer;
     question.value = parentQuestion;
+    // update the specific ard in flashcards
+    flashcards.forEach((card, index) => {
+      if(card.randomIdx === parentDiv.getAttribute("id")) {
+        // remove the card from the array since a new one will be added when you hit the save button
+        if(index > -1) {
+          flashcards.splice(index)
+        }
+      }
+    })
+    // update the local storage
+    localStorage.setItem("flashcards", JSON.stringify(flashcards))
     // disable all the edit buttons in the card list
     disableButtons(true);
   }
@@ -57,15 +73,29 @@ function modifyElement(element, edit = false) {
 function deleteCard(element) {
   let parentDiv = element.parentElement.parentElement;
   console.log(parentDiv);
-  parentDiv.remove();
+  // remove card from flashcards
+  flashcards.forEach((card, index) => {
+    if(card.randomIdx === parentDiv.getAttribute("id")) {
+      // remove card
+      if(index > -1) {
+        flashcards.splice(index)
+      }
+    }
+  })
+  console.log(flashcards)
+  localStorage.setItem("flashcards", JSON.stringify(flashcards))
+  // remove the div from the DOM
+  parentDiv.remove()
 }
 
 
 
-function displayCard(question, answer) {
+function displayCard(question, answer, randomId) {
+
   // create a div
   let div = document.createElement("div");
   div.classList.add("card");
+  div.setAttribute("id", randomId)
   // add question to object
   div.innerHTML += `<p class="question-div">${question}</p>`;
   let displayAnswer = document.createElement("p");
@@ -149,22 +179,30 @@ saveBtn.addEventListener("click", () => {
     container.classList.remove("hide");
     // hide the question container
     questionContainer.classList.add("hide");
+    let randomId = revisedRandId()
+
     // add the question and answer to the flashcards object
-    flashcards.push({ question: tempQuestion, answer: tempAnswer})
-    // save card to local storage
+    flashcards.push({ question: tempQuestion, answer: tempAnswer, randomIdx: randomId})
+
+    // save the flashcards to local storage - arry of objects
     localStorage.setItem("flashcards", JSON.stringify(flashcards))
-    // display the card - create the card
-    displayCard(question.value, answer.value);
-    // after displaying the card then reset the question and answer values
+    // display the flashcards
+    displayCard(tempQuestion, tempAnswer, randomId)
+
+    // after displaying the card then reset the question and answer values in the form inputs
     question.value = "";
     answer.value = "";
   }
 });
 
+window.onload = function() {
+  // get data from storage
+  flashcards = JSON.parse(localStorage.getItem("flashcards"))
+  if(flashcards !== null) {
+    // display cards
+    flashcards.forEach(card => displayCard(card.question, card.answer, card.randomIdx))
+  }
+}
 
 
-flashcards = JSON.parse(localStorage.getItem("flashcards"))
-// iterate over the flashcards and display the card
-flashcards.forEach(card => {
-  displayCard(card.question, card.answer)
-})
+
