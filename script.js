@@ -14,6 +14,8 @@ const question = document.querySelector("#question");
 const answer = document.querySelector("#answer");
 
 let editBool = false;
+// push object with question and answer to array
+let flashcards = []
 
 // Helper Functions
 function hideQuestion() {
@@ -58,15 +60,18 @@ function deleteCard(element) {
   parentDiv.remove();
 }
 
-function displayCard() {
+
+
+function displayCard(question, answer) {
   // create a div
   let div = document.createElement("div");
   div.classList.add("card");
-  div.innerHTML += `<p class="question-div">${question.value}</p>`;
+  // add question to object
+  div.innerHTML += `<p class="question-div">${question}</p>`;
   let displayAnswer = document.createElement("p");
   displayAnswer.classList.add("answer-div");
   displayAnswer.classList.add("hide");
-  displayAnswer.innerText = answer.value;
+  displayAnswer.innerText = answer;
 
   // button link to hide and show answer
   let link = document.createElement("a");
@@ -144,10 +149,22 @@ saveBtn.addEventListener("click", () => {
     container.classList.remove("hide");
     // hide the question container
     questionContainer.classList.add("hide");
+    // add the question and answer to the flashcards object
+    flashcards.push({ question: tempQuestion, answer: tempAnswer})
+    // save card to local storage
+    localStorage.setItem("flashcards", JSON.stringify(flashcards))
     // display the card - create the card
-    displayCard();
+    displayCard(question.value, answer.value);
     // after displaying the card then reset the question and answer values
     question.value = "";
     answer.value = "";
   }
 });
+
+
+
+flashcards = JSON.parse(localStorage.getItem("flashcards"))
+// iterate over the flashcards and display the card
+flashcards.forEach(card => {
+  displayCard(card.question, card.answer)
+})
